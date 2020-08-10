@@ -31,6 +31,8 @@ public class MainApp {
          System.out.println();
       }
 
+      System.out.println(userService.getUserById(5).getFirstName());
+
       context.close();
    }
 }

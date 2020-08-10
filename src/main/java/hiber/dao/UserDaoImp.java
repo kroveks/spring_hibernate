@@ -5,6 +5,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
@@ -21,14 +22,11 @@ public class UserDaoImp implements UserDao {
    }
 
    @Override
-   public User getUserByCar(String name, int series) {
-      List<User> user = listUsers();
-      for(User cnt : user) {
-         if((cnt.getCar().getName() == name) && (cnt.getCar().getSeries() == series)) {
-            return cnt;
-         }
-      }
-      return null;
+   public User getUserByCar(int series) {
+      Query querry = sessionFactory.getCurrentSession().createQuery            //надо ли это как-то в try оборачивать или спринг разберется сам со всем?
+              ("from User where car.series = :series")
+              .setParameter("series", series);
+      return (User) querry.getSingleResult();
    }
 
    @Override
